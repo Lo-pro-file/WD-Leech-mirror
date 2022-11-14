@@ -222,7 +222,9 @@ def rss_monitor(context):
                 except IndexError:
                     url = rss_d.entries[feed_count]['link']
                 if RSS_COMMAND is not None:
-                    feed_msg = f"{RSS_COMMAND} {url}"
+                    feed_msg = f"{RSS_COMMAND} {url}\n\n"
+                    feed_msg += f"<b>❄️ नाम ⇛ </b>{rss_d.entries[feed_count]['title'].replace('>', '').replace('<', '')}"
+                    #feed_msg += f"\n\n<b>❄️ नाम ⇛ </b><code>{rss_d.entries[feed_count]['title'].replace('>', '').replace('<', '')}</code>"
                 else:
                     feed_msg = f"<b>❄️ नाम ⇛ </b><code>{rss_d.entries[feed_count]['title'].replace('>', '').replace('<', '')}</code>\n\n"
                     feed_msg += f"<b>❄️ लिंक ⇛ </b><code>{url}</code>"
