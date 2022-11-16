@@ -1,7 +1,7 @@
 <p align="center">
     <a href="https://github.com/weebzone/WZML">
         <kbd>
-            <img width="250" src="https://telegra.ph/file/496644cbabaeb916e3616.png" alt="WeebZone Logo">
+            <img width="250" src="https://graph.org/file/d2d53c4ae00372ca1adcd.jpg" alt="WeebZone Logo">
         </kbd>
     </a>
 </p>
