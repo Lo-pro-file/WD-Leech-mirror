@@ -1,6 +1,4 @@
-import re
 from PIL import Image
-from os import environ, remove
 from logging import getLogger, FileHandler, StreamHandler, INFO, basicConfig, error as log_error, info as log_info, warning as log_warning
 from socket import setdefaulttimeout
 from urllib.request import urlretrieve
@@ -8,7 +6,7 @@ from faulthandler import enable as faulthandler_enable
 from telegram.ext import Updater as tgUpdater
 from qbittorrentapi import Client as qbClient
 from aria2p import API as ariaAPI, Client as ariaClient
-from os import remove as osremove, path as ospath, environ
+from os import remove as osremove, path as ospath, environ, mkdir
 from requests import get as rget
 from json import loads as jsonloads
 from subprocess import Popen, run as srun, check_output
@@ -147,12 +145,16 @@ try:
     TGH_THUMB = getConfig('TGH_THUMB')
     if len(TGH_THUMB) == 0:
         raise KeyError
-    photo_dir = 'downloads/' + TGH_THUMB.split('/')[-1]
-    urlretrieve(TGH_THUMB, photo_dir)
-    Image.open(photo_dir).convert("RGB").save('Thumbnails/weeb.jpg', "JPEG")
-    remove(photo_dir)
 except:
-    TGH_THUMB = ''
+    TGH_THUMB = 'https://te.legra.ph/file/e9c87ad0b805862cd73a5.jpg'
+
+path = "Thumbnails/"
+if not ospath.isdir(path):
+    mkdir(path)
+photo_dir = path + TGH_THUMB.split('/')[-1]
+urlretrieve(TGH_THUMB, photo_dir)
+Image.open(photo_dir).convert("RGB").save('Thumbnails/weeb.jpg', "JPEG")
+osremove(photo_dir)
 
 try:
     aid = getConfig('AUTHORIZED_CHATS')
@@ -457,7 +459,7 @@ try:
         raise KeyError
 except:
     START_BTN1_NAME = 'Master'
-    START_BTN1_URL = 'https://t.me/Opleech_updates_v1'
+    START_BTN1_URL = 'https://t.me/krn_adhikari'
 
 try:
     START_BTN2_NAME = getConfig('START_BTN2_NAME')
@@ -466,7 +468,7 @@ try:
         raise KeyError
 except:
     START_BTN2_NAME = 'Support Group'
-    START_BTN2_URL = 'https://t.me/Opleech_updates_v1'
+    START_BTN2_URL = 'https://t.me/WeebZone_updates'
 try:
     BUTTON_FOUR_NAME = getConfig('BUTTON_FOUR_NAME')
     BUTTON_FOUR_URL = getConfig('BUTTON_FOUR_URL')
@@ -677,28 +679,28 @@ except KeyError:
 try:
     AUTHOR_NAME = getConfig('AUTHOR_NAME')
     if len(AUTHOR_NAME) == 0:
-        AUTHOR_NAME = 'WD Zone'
+        AUTHOR_NAME = 'Karan'
 except KeyError:
-    AUTHOR_NAME = 'WD Zone'
+    AUTHOR_NAME = 'Karan'
 try:
     AUTHOR_URL = getConfig('AUTHOR_URL')
     if len(AUTHOR_URL) == 0:
-        AUTHOR_URL = 'https://t.me/Opleech_updates_v1'
+        AUTHOR_URL = 'https://t.me/WeebZone_updates'
 except KeyError:
-    AUTHOR_URL = 'https://t.me/Opleech_updates_v1'
+    AUTHOR_URL = 'https://t.me/WeebZone_updates'
 try:
     TITLE_NAME = getConfig('TITLE_NAME')
     if len(TITLE_NAME) == 0:
-        TITLE_NAME = 'WD Zone'
+        TITLE_NAME = 'WeebZone'
 except KeyError:
-    TITLE_NAME = 'WD Zone'
+    TITLE_NAME = 'WeebZone'
 
 try:
     GD_INFO = getConfig('GD_INFO')
     if len(GD_INFO) == 0:
-        GD_INFO = 'Uploaded by WD Zone Mirror Bot'
+        GD_INFO = 'Uploaded by WeebZone Mirror Bot'
 except KeyError:
-    GD_INFO = 'Uploaded by WD Zone Mirror Bot'
+    GD_INFO = 'Uploaded by WeebZone Mirror Bot'
 try:
     DISABLE_DRIVE_LINK = getConfig('DISABLE_DRIVE_LINK')
     DISABLE_DRIVE_LINK = DISABLE_DRIVE_LINK.lower() == 'true'
@@ -709,9 +711,9 @@ except KeyError:
 try:
     CREDIT_NAME = getConfig('CREDIT_NAME')
     if len(CREDIT_NAME) == 0:
-        CREDIT_NAME = 'WD Zone'
+        CREDIT_NAME = 'WeebZone'
 except KeyError:
-    CREDIT_NAME = 'WD Zone'
+    CREDIT_NAME = 'WeebZone'
 try:
     NAME_FONT = getConfig('NAME_FONT')
     if len(NAME_FONT) == 0:
@@ -742,16 +744,16 @@ try:
     if len(CHANNEL_USERNAME) == 0:
         raise KeyError
 except KeyError:
-    log_info("CHANNEL_USERNAME not provided! Using default @Opleech_updates_v1")
-    CHANNEL_USERNAME = "Opleech_updates_v1"
+    log_info("CHANNEL_USERNAME not provided! Using default @WeebZone_updates")
+    CHANNEL_USERNAME = "WeebZone_updates"
 try:
     FSUB_CHANNEL_ID = getConfig("FSUB_CHANNEL_ID")
     if len(FSUB_CHANNEL_ID) == 0:
         raise KeyError
     FSUB_CHANNEL_ID = int(FSUB_CHANNEL_ID)
 except KeyError:
-    log_info("CHANNEL_ID not provided! Using default id of @Opleech_updates_v1")
-    FSUB_CHANNEL_ID = -1001591862758
+    log_info("CHANNEL_ID not provided! Using default id of @WeebZone_updates")
+    FSUB_CHANNEL_ID = -1001512307861
 try:
     TOKEN_PICKLE_URL = getConfig('TOKEN_PICKLE_URL')
     if len(TOKEN_PICKLE_URL) == 0:
@@ -843,7 +845,7 @@ except:
 try:
     IMAGE_URL = getConfig('IMAGE_URL')
 except KeyError:
-    IMAGE_URL = 'https://graph.org/file/9acb6f716c8e75b1656ab.jpg'
+    IMAGE_URL = 'https://te.legra.ph/file/e9c87ad0b805862cd73a5.jpg'
 try:
     EMOJI_THEME = getConfig('EMOJI_THEME')
     EMOJI_THEME = EMOJI_THEME.lower() == 'true'
