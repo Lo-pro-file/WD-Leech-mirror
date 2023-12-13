@@ -145,7 +145,7 @@ def rss_settings(update, context):
     else:
         buttons.sbutton("Start", "rss start")
     if AUTO_DELETE_MESSAGE_DURATION == -1:
-        buttons.sbutton("Close", "rss close")
+        buttons.sbutton("Close", f"rss close")
     button = buttons.build_menu(1)
     setting = sendMarkup('Rss Settings', context.bot, update.message, button)
     Thread(target=auto_delete_message, args=(context.bot, update.message, setting)).start()
@@ -211,11 +211,7 @@ def rss_monitor(context):
                     break
                 parse = True
                 for list in data[3]:
-                    if all(
-                        x
-                        not in str(rss_d.entries[feed_count]['title']).lower()
-                        for x in list
-                    ):
+                    if not any(x in str(rss_d.entries[feed_count]['title']).lower() for x in list):
                         parse = False
                         feed_count += 1
                         break
@@ -232,8 +228,8 @@ def rss_monitor(context):
                 else:
                     feed_msg = f"<b>❄️ नाम ⇛ </b><code>{rss_d.entries[feed_count]['title'].replace('>', '').replace('<', '')}</code>\n\n"
                     feed_msg += f"<b>❄️ लिंक ⇛ </b><code>{url}</code>"
-                    feed_msg += "<b> </b>"
-                    feed_msg += "<b>⇛ Join 🔗 @Opleech_updates_v1</b>"
+                    feed_msg += f"<b> </b>"
+                    feed_msg += f"<b>⇛ Join 🔗 @Opleech_updates_v1</b>"
                 sendRss(feed_msg, context.bot)
                 feed_count += 1
                 sleep(5)

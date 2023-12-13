@@ -11,20 +11,13 @@ from bot.helper.ext_utils.db_handler import DbManger
 
 
 def prefix_set(update, context):
-    user_id_ = update.message.from_user.id
+    user_id_ = update.message.from_user.id 
     u_men = update.message.from_user.first_name
 
-    if (
-        PAID_SERVICE is True
-        and user_id_ not in PAID_USERS
-        and user_id_ != OWNER_ID
-    ):
-        sendMessage(
-            "Buy Paid Service to Use this Prename Feature.",
-            context.bot,
-            update.message,
-        )
-        return
+    if PAID_SERVICE is True:
+        if not (user_id_ in PAID_USERS) and user_id_ != OWNER_ID:
+            sendMessage(f"Buy Paid Service to Use this Prename Feature.", context.bot, update.message)
+            return
     if (BotCommands.PreNameCommand in update.message.text) and (len(update.message.text.split(' ')) == 1):
         help_msg = "<b>Send prefix after command:</b>"
         help_msg += f"\n<code>/{BotCommands.PreNameCommand}" + " {prefix}" + "</code>\n"
@@ -32,9 +25,7 @@ def prefix_set(update, context):
         help_msg += f"\n<code>/{BotCommands.PreNameCommand}" + " {message}" + "</code>"
         sendMessage(help_msg, context.bot, update.message)
     else:
-        lm = sendMessage(
-            "<b>Please Wait....Processing🤖</b>", context.bot, update.message
-        )
+        lm = sendMessage(f"<b>Please Wait....Processing🤖</b>", context.bot, update.message)
         pre_send = update.message.text.split(" ", maxsplit=1)
         reply_to = update.message.reply_to_message
         if len(pre_send) > 1:
@@ -52,20 +43,13 @@ def prefix_set(update, context):
 
 
 def suffix_set(update, context):
-    user_id_ = update.message.from_user.id
+    user_id_ = update.message.from_user.id 
     u_men = update.message.from_user.first_name
 
-    if (
-        PAID_SERVICE is True
-        and user_id_ not in PAID_USERS
-        and user_id_ != OWNER_ID
-    ):
-        sendMessage(
-            "Buy Paid Service to Use this Suffix Feature.",
-            context.bot,
-            update.message,
-        )
-        return
+    if PAID_SERVICE is True:
+        if not (user_id_ in PAID_USERS) and user_id_ != OWNER_ID:
+            sendMessage(f"Buy Paid Service to Use this Suffix Feature.", context.bot, update.message)
+            return
     if (BotCommands.SufNameCommand in update.message.text) and (len(update.message.text.split(' ')) == 1):
         help_msg = "<b>Send suffix after command:</b>"
         help_msg += f"\n<code>/{BotCommands.SufNameCommand}" + " {suffix}" + "</code>\n"
@@ -73,9 +57,7 @@ def suffix_set(update, context):
         help_msg += f"\n<code>/{BotCommands.SufNameCommand}" + " {message}" + "</code>"
         sendMessage(help_msg, context.bot, update.message)
     else:
-        lm = sendMessage(
-            "<b>Please Wait....Processing🤖</b>", context.bot, update.message
-        )
+        lm = sendMessage(f"<b>Please Wait....Processing🤖</b>", context.bot, update.message)
         pre_send = update.message.text.split(" ", maxsplit=1)
         reply_to = update.message.reply_to_message
         if len(pre_send) > 1:
@@ -93,28 +75,19 @@ def suffix_set(update, context):
 
 
 def caption_set(update, context):
-    user_id_ = update.message.from_user.id
+    user_id_ = update.message.from_user.id 
     u_men = update.message.from_user.first_name
     buttons = ButtonMaker()
 
-    if (
-        PAID_SERVICE is True
-        and user_id_ not in PAID_USERS
-        and user_id_ != OWNER_ID
-    ):
-        sendMessage(
-            "✔️Buy Paid Service to Use this Caption Feature.",
-            context.bot,
-            update.message,
-        )
-        return
+    if PAID_SERVICE is True:
+        if not (user_id_ in PAID_USERS) and user_id_ != OWNER_ID:
+            sendMessage(f"✔️Buy Paid Service to Use this Caption Feature.", context.bot, update.message)
+            return
     buttons.sbutton("🛠 Change Font Style", f"capfont {user_id_} font")
     button = buttons.build_menu(2)
     if (BotCommands.CaptionCommand in update.message.text) and (len(update.message.text.split(' ')) == 1):
-        hlp_me = (
-            "<b>Send text with format along with command line:</b>\n"
-            + "<code>/cmd</code> {text} |previousname•newname•times (optional)\n\n"
-        )
+        hlp_me = "<b>Send text with format along with command line:</b>\n"
+        hlp_me += "<code>/cmd</code> {text} |previousname•newname•times (optional)\n\n"
         hlp_me += f"<b>Example •</b> /{BotCommands.CaptionCommand} " + "{filename}\n"
         hlp_me += '&lt;b&gt;Fork WD Here • &lt;a href="link"&gt;Click Here&lt;/a&gt;&lt;/b&gt;|Fork:Star|Here•Now•1|WD\n\n'
         hlp_me += "Output • Hi there.txt\nStar Now • Click Here\n\n"
@@ -134,9 +107,7 @@ def caption_set(update, context):
 5. For New Line, Just Press Simple Enter on your Keyboard.'''
         sendMarkup(hlp_me, context.bot, update.message, button)
     else:
-        lm = sendMessage(
-            "<b>✔️Please wait•••Processing🤖</b>", context.bot, update.message
-        )
+        lm = sendMessage(f"<b>✔️Please wait•••Processing🤖</b>", context.bot, update.message)
         pre_send = update.message.text.split(" ", maxsplit=1)
         reply_to = update.message.reply_to_message
         if len(pre_send) > 1:
@@ -233,28 +204,21 @@ def setCapFont(update, context):
 
 
 def userlog_set(update, context):
-    user_id_ = update.message.from_user.id
+    user_id_ = update.message.from_user.id 
     u_men = update.message.from_user.first_name
 
-    if (
-        PAID_SERVICE is True
-        and user_id_ not in PAID_USERS
-        and user_id_ != OWNER_ID
-    ):
-        sendMessage(
-            "✔️Buy Paid Service to Use this Dump Feature.",
-            context.bot,
-            update.message,
-        )
-        return
+    if PAID_SERVICE is True:
+        if not (user_id_ in PAID_USERS) and user_id_ != OWNER_ID:
+            sendMessage(f"✔️Buy Paid Service to Use this Dump Feature.", context.bot, update.message)
+            return
     if (BotCommands.UserLogCommand in update.message.text) and (len(update.message.text.split(' ')) == 1):
         help_msg = "<b>✔️Send channel id after command •</b>"
-        help_msg += f"\n<code>/{BotCommands.UserLogCommand} -100xxxxxxx" + "</code>\n"
+        help_msg += f"\n<code>/{BotCommands.UserLogCommand}" + " -100xxxxxxx" + "</code>\n"
         help_msg += "\n<b>✔️By Replying to Message (Including Channel ID):</b>"
         help_msg += f"\n<code>/{BotCommands.UserLogCommand}" + " {message}" + "</code>"
         sendMessage(help_msg, context.bot, update.message)
         return
-    lm = sendMessage("✔️Checking your Channel ID••• 🛃", context.bot, update.message)
+    lm = sendMessage("✔️Checking your Channel ID••• 🛃", context.bot, update.message)          
     pre_send = update.message.text.split(" ", maxsplit=1)
     reply_to = update.message.reply_to_message
     if len(pre_send) > 1:
@@ -285,25 +249,16 @@ def userlog_set(update, context):
 
 
 def remname_set(update, context):
-    user_id_ = update.message.from_user.id
+    user_id_ = update.message.from_user.id 
     u_men = update.message.from_user.first_name
 
-    if (
-        PAID_SERVICE is True
-        and user_id_ not in PAID_USERS
-        and user_id_ != OWNER_ID
-    ):
-        sendMessage(
-            "✔️Buy Paid Service to Use this Remname Feature.",
-            context.bot,
-            update.message,
-        )
-        return
+    if PAID_SERVICE is True:
+        if not (user_id_ in PAID_USERS) and user_id_ != OWNER_ID:
+            sendMessage(f"✔️Buy Paid Service to Use this Remname Feature.", context.bot, update.message)
+            return
     if (BotCommands.RemnameCommand in update.message.text) and (len(update.message.text.split(' ')) == 1):
-        hlp_me = (
-            "<b>Send text with format along with command line•</b>\n"
-            + "<code>/cmd</code> previousname•newname•times|previousname•newname•times\n\n"
-        )
+        hlp_me = "<b>Send text with format along with command line•</b>\n"
+        hlp_me += "<code>/cmd</code> previousname•newname•times|previousname•newname•times\n\n"
         hlp_me += f"<b>Example •</b> /{BotCommands.RemnameCommand} " + "Fork:Star|Here•Now•1|WD\n\n"
         hlp_me += "Output • Star Now • Click Here.txt\n\n"
         hlp_me += "<b>Explanation •</b> Here, Fork changed to Star, Here changed to Now, only 1 time and WD is removed.\n\n"
@@ -314,12 +269,10 @@ def remname_set(update, context):
 
 3. For Changing, A work or Letter in a Limited no. of Times, use again • separator to specify no. of times to remove. (optional)
 
-4. Filename is Changed according to your Remname, so No need to change in Caption, again for filename.'''
+4. Filename is Changed according to your Remname, so No need to change in Caption, again for filename.''' 
         sendMessage(hlp_me, context.bot, update.message)
     else:
-        lm = sendMessage(
-            "<b>✔️Please wait•••Processing🤖</b>", context.bot, update.message
-        )
+        lm = sendMessage(f"<b>✔️Please wait•••Processing🤖</b>", context.bot, update.message)
         pre_send = update.message.text.split(" ", maxsplit=1)
         reply_to = update.message.reply_to_message
         if len(pre_send) > 1:
