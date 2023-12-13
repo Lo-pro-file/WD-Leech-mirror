@@ -51,10 +51,9 @@ def stats(update, context):
     if ospath.exists('.git'):
         if EMOJI_THEME is True:
             last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd \n<b>⇛</b> 🛠<b>From</b> %cr'"], shell=True).decode()
-            botVersion = check_output(["git log -1 --date=format:v%y.%m%d.%H%M --pretty=format:%cd"], shell=True).decode()
         else:
             last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd \n<b>├</b> <b>From</b> %cr'"], shell=True).decode()
-            botVersion = check_output(["git log -1 --date=format:v%y.%m%d.%H%M --pretty=format:%cd"], shell=True).decode()
+        botVersion = check_output(["git log -1 --date=format:v%y.%m%d.%H%M --pretty=format:%cd"], shell=True).decode()
     else:
         botVersion = 'No UPSTREAM_REPO'
         last_commit = 'No UPSTREAM_REPO'
@@ -151,12 +150,11 @@ def start(update, context):
         buttons.buildbutton(f"★ {START_BTN1_NAME}", f"{START_BTN1_URL}")
         buttons.buildbutton(f"★ {START_BTN2_NAME}", f"{START_BTN2_URL}")
         buttons.buildbutton("✔️ WD Bot ★", "https://t.me/Opleech")
-        buttons.buildbutton("✔️ Updates ★", "https://t.me/Opleech_updates_v1")
     else:
         buttons.buildbutton(f"{START_BTN1_NAME}", f"{START_BTN1_URL}")
         buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
         buttons.buildbutton("✔️ Bot Owner ★", "https://t.me/Opleech")
-        buttons.buildbutton("✔️ Updates ★", "https://t.me/Opleech_updates_v1")
+    buttons.buildbutton("✔️ Updates ★", "https://t.me/Opleech_updates_v1")
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''Welcome ●✤◄ 𝐖𝐃 𝐙𝐎𝐍𝐄  ►✤● Bot is Ready✔️
@@ -167,8 +165,10 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
         else:
             sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
-        text = f"✔️Not Authorized user, 𝐖𝐃 𝐙𝐎𝐍𝐄 mirror bot"
-        text += f"ओए राजू प्यार ना करियो दिल टूट जाता है 🥲"
+        text = (
+            "✔️Not Authorized user, 𝐖𝐃 𝐙𝐎𝐍𝐄 mirror bot"
+            + "ओए राजू प्यार ना करियो दिल टूट जाता है 🥲"
+        )
         if PICS:
             sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
@@ -459,7 +459,7 @@ def main():
                     msg += f"◎Date • {date}\n"
                     msg += f"◎Time • {time}\n"
                     msg += f"◎TimeZone • {TIMEZONE}\n"
-                    msg += f"⇛ Misuc ⇛ https://t.me/Mp3Quality_songs_320kbps"
+                    msg += "⇛ Misuc ⇛ https://t.me/Mp3Quality_songs_320kbps"
 
                 for tag, links in data.items():
                      msg += f"\n{tag}: "

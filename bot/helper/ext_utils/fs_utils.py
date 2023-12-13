@@ -227,8 +227,7 @@ def get_media_info(path):
 
     duration = round(float(fields.get('duration', 0)))
 
-    fields = fields.get('tags')
-    if fields:
+    if fields := fields.get('tags'):
         artist = fields.get('artist')
         if artist is None:
             artist = fields.get('ARTIST')
