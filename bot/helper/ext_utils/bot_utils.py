@@ -112,7 +112,11 @@ def getAllDownload(req_status: str):
     return None
 
 def bt_selection_buttons(id_: str):
-    gid = id_[:12] if len(id_) > 20 else id_
+    if len(id_) > 20:
+        gid = id_[:12]
+    else:
+        gid = id_
+
     pincode = ""
     for n in id_:
         if n.isdigit():
@@ -138,17 +142,15 @@ def get_user_task(user_id):
     return user_task
 
 def timeformatter(milliseconds: int) -> str:
-    seconds, milliseconds = divmod(milliseconds, 1000)
+    seconds, milliseconds = divmod(int(milliseconds), 1000)
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
-    tmp = (
-        (f"{str(days)} days, " if days else "")
-        + (f"{str(hours)} hours, " if hours else "")
-        + (f"{str(minutes)} min, " if minutes else "")
-        + (f"{str(seconds)} sec, " if seconds else "")
-        + (f"{str(milliseconds)} millisec, " if milliseconds else "")
-    )
+    tmp = ((str(days) + " days, ") if days else "") + \
+        ((str(hours) + " hours, ") if hours else "") + \
+        ((str(minutes) + " min, ") if minutes else "") + \
+        ((str(seconds) + " sec, ") if seconds else "") + \
+        ((str(milliseconds) + " millisec, ") if milliseconds else "")
     return tmp[:-2]
 
 def get_progress_bar_string(status):
@@ -195,11 +197,12 @@ def get_readable_message():
 
                 if hasattr(download, 'seeders_num'):
                     try:
-                        msg += (
-                            f"\n<b>⇛ Seeders •</b> {download.seeders_num()} | <b>⇛ Leechers •</b> {download.leechers_num()}"
-                            if EMOJI_THEME is True
-                            else f"\n<b>├ Seeders:</b> {download.seeders_num()} | <b>Leechers:</b> {download.leechers_num()}"
-                        )
+                        if EMOJI_THEME is True:
+                            msg += f"\n<b>⇛ Seeders •</b> {download.seeders_num()} | <b>⇛ Leechers •</b> {download.leechers_num()}"
+                            # msg += f"\n<b>⇛ To Select:</b> <code>/{BotCommands.BtSelectCommand} {download.gid()}</code>"
+                        else:
+                            msg += f"\n<b>├ Seeders:</b> {download.seeders_num()} | <b>Leechers:</b> {download.leechers_num()}"
+                            # msg += f"\n<b>├ To Select:</b> <code>/{BotCommands.BtSelectCommand} {download.gid()}</code>"
                     except:
                         pass
                 if download.message.chat.type != 'private':
@@ -213,12 +216,13 @@ def get_readable_message():
                             msg += f"\n<b>╰ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"                 
                     except:
                         pass
-                elif EMOJI_THEME is True:
-                    msg += f'\n<b>⇛ User •</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
-                    msg += f"\n<b>⇛ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
                 else:
-                    msg += f'\n<b>├ User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
-                    msg += f"\n<b>╰ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
+                    if EMOJI_THEME is True:
+                        msg += f'\n<b>⇛ User •</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
+                        msg += f"\n<b>⇛ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
+                    else:
+                        msg += f'\n<b>├ User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
+                        msg += f"\n<b>╰ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
 
             elif download.status() == MirrorStatus.STATUS_SEEDING:
                 if EMOJI_THEME is True:
@@ -239,12 +243,13 @@ def get_readable_message():
                     msg += f" | <b> Time: </b>{download.seeding_time()}"
                     msg += f"\n<b>├ Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
                     msg += f"\n<b>╰ </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
-            elif EMOJI_THEME is True:
-                msg += f"\n<b>⇛ Engine •</b> {download.eng()}"
-                msg += f"\n<b>⇛ Size • </b>{download.size()}"
             else:
-                msg += f"\n<b>├ Engine :</b> {download.eng()}"
-                msg += f"\n<b>╰ Size: </b>{download.size()}"
+                if EMOJI_THEME is True:
+                    msg += f"\n<b>⇛ Engine •</b> {download.eng()}"
+                    msg += f"\n<b>⇛ Size • </b>{download.size()}"
+                else:
+                    msg += f"\n<b>├ Engine :</b> {download.eng()}"
+                    msg += f"\n<b>╰ Size: </b>{download.size()}"
             msg += f"\n<b>   ⊱✤┅┅┅●( 𝐖𝐃 𝐙𝐎𝐍𝐄 )●┅┅┅✤⊰</b>"
             msg += "\n\n"
             if STATUS_LIMIT is not None and index == STATUS_LIMIT:
@@ -281,13 +286,13 @@ def get_readable_message():
             bmsg = f"<b>CPU:</b> {cpu_percent()}% | <b>FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
             bmsg += f"\n<b>RAM:</b> {virtual_memory().percent}% | <b>UPTIME:</b> {get_readable_time(time() - botStartTime)}"
             bmsg += f"\n<b>DL:</b> {get_readable_file_size(dl_speed)}/s | <b>UL:</b> {get_readable_file_size(up_speed)}/s"
-
+        
         buttons = ButtonMaker()
         buttons.sbutton("⭕️", "status refresh")
         buttons.sbutton("⚙️", str(THREE))
         buttons.sbutton("❌", "status close")
         sbutton = buttons.build_menu(3)
-
+        
         if STATUS_LIMIT is not None and tasks > STATUS_LIMIT:
             msg += f"<b>⇛ Tasks •</b> {tasks}\n"
             buttons = ButtonMaker()
@@ -295,12 +300,14 @@ def get_readable_message():
                 buttons.sbutton("◄Previous", "status pre")
                 buttons.sbutton(f"{PAGE_NO}/{PAGES}", str(THREE))
                 buttons.sbutton("Next►", "status nex")
+                buttons.sbutton("⭕️", "status refresh")
+                buttons.sbutton("❌", "status close")
             else:
                 buttons.sbutton("Previous", "status pre")
                 buttons.sbutton(f"{PAGE_NO}/{PAGES}", str(THREE))
                 buttons.sbutton("Next", "status nex")
-            buttons.sbutton("⭕️", "status refresh")
-            buttons.sbutton("❌", "status close")
+                buttons.sbutton("⭕️", "status refresh")
+                buttons.sbutton("❌", "status close")
             button = buttons.build_menu(3)
             return msg + bmsg, button
         return msg + bmsg, sbutton
@@ -358,13 +365,17 @@ def is_gdtot_link(url: str):
 
 def is_unified_link(url: str):
     url = re_match(r'https?://(appdrive|driveapp|driveace|gdflix|drivebit|drivesharer|drivepro)\.\S+', url)
-    return bool(url) or False
+    if bool(url) == True:
+        return bool(url)
+    else:
+        return False
 
 def is_udrive_link(url: str):
     if 'drivehub.ws' in url:
         return 'drivehub.ws' in url
-    url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz)\.\S+', url)
-    return bool(url)
+    else:
+        url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz)\.\S+', url)
+        return bool(url)
 
 def is_mega_link(url: str):
     return "mega.nz" in url or "mega.co.nz" in url
@@ -441,7 +452,7 @@ def bot_sys_stats():
                 num_extract += 1
        if stats.status() == MirrorStatus.STATUS_SPLITTING:
                 num_split += 1
-    return f"""
+    stats = f"""
 CPU • {cpu}% | RAM • {mem}%
 DL • {num_active} | UP • {num_upload} | SPLIT • {num_split}
 ZIP • {num_archi} | UNZIP • {num_extract} | TOTAL • {tasks}
@@ -449,6 +460,7 @@ Limits • T/D • {TORRENT_DIRECT_LIMIT}GB | Z/U • {ZIP_UNZIP_LIMIT}GB
                     L • {LEECH_LIMIT}GB | M • {MEGA_LIMIT}GB
 ● Powered By ✔️ WD Zone
 """
+    return stats
 dispatcher.add_handler(
-    CallbackQueryHandler(pop_up_stats, pattern=f"^{str(THREE)}$")
+    CallbackQueryHandler(pop_up_stats, pattern="^" + str(THREE) + "$")
 )
